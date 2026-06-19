@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Updatescooter | عالم السكوترات الذكية</title>
+    <title>مركز تحديثات السكوتر الذكي | Scooter Firmware Update</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,276 +20,451 @@
             background-color: #0b0c10;
             color: #c5c6c7;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* Navbar */
-        nav {
+        /* Header / Navbar */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
             background-color: rgba(11, 12, 16, 0.95);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(102, 252, 241, 0.1);
             backdrop-filter: blur(10px);
         }
 
-        nav .logo {
-            font-size: 24px;
+        .logo {
+            font-size: 22px;
             font-weight: 900;
             color: #66fcf1;
             letter-spacing: 1px;
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        nav ul li a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 16px;
-            transition: 0.3s ease;
-        }
-
-        nav ul li a:hover {
+        .status-badge {
+            background-color: rgba(102, 252, 241, 0.1);
             color: #66fcf1;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(102, 252, 241, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(to bottom, rgba(11, 12, 16, 0.3), #0b0c10), 
-                        url('https://images.unsplash.com/photo-1608615600464-6600a5b2a22a?q=80&w=1920') no-repeat center center/cover;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #66fcf1;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
-            padding: 0 8%;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .update-card {
+            background-color: #1f2833;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 550px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: #ffffff;
-            line-height: 1.2;
-            margin-bottom: 15px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        /* Progress Bar */
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
         }
 
-        .hero h1 span {
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #0b0c10;
+            z-index: 1;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            background-color: #0b0c10;
+            border: 2px solid #c5c6c7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #c5c6c7;
+            z-index: 2;
+            transition: 0.4s ease;
+        }
+
+        .step-dot.active {
+            border-color: #66fcf1;
+            background-color: #1f2833;
             color: #66fcf1;
+            box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            color: #45f3ff;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .btn {
+        .step-dot.completed {
+            border-color: #66fcf1;
             background-color: #66fcf1;
             color: #0b0c10;
-            padding: 12px 35px;
-            font-size: 18px;
+        }
+
+        /* Steps Content */
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 15px;
+            color: #c5c6c7;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Instruction Highlight Box */
+        .instruction-box {
+            background-color: rgba(11, 12, 16, 0.5);
+            border-right: 4px solid #66fcf1;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .instruction-box ul {
+            list-style: none;
+            padding-right: 10px;
+        }
+
+        .instruction-box ul li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instruction-box ul li::before {
+            content: '⚡';
+            font-size: 12px;
+        }
+
+        /* Inputs */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background-color: #0b0c10;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #66fcf1;
+            box-shadow: 0 0 10px rgba(102, 252, 241, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            background-color: #66fcf1;
+            color: #0b0c10;
+            padding: 14px;
+            font-size: 16px;
             font-weight: 700;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: 0.4s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3);
+            transition: 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 252, 241, 0.2);
         }
 
         .btn:hover {
             background-color: #45f3ff;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 252, 241, 0.5);
+            box-shadow: 0 6px 20px rgba(102, 252, 241, 0.4);
         }
 
-        /* Products / Scooter Grid */
-        .products {
-            padding: 100px 8%;
+        /* Loading Animation */
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 0;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #ffffff;
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: #66fcf1;
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .card {
-            background-color: #1f2833;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-            border-color: rgba(102, 252, 241, 0.2);
-        }
-
-        .card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: 0.5s ease;
-        }
-
-        .card:hover img {
-            scale: 1.05;
-        }
-
-        .card-content {
-            padding: 25px;
-        }
-
-        .card-content h3 {
-            color: #ffffff;
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .card-content p {
-            font-size: 14px;
-            color: #c5c6c7;
-            line-height: 1.6;
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(102, 252, 241, 0.1);
+            border-radius: 50%;
+            border-top-color: #66fcf1;
+            animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
 
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .price {
-            color: #66fcf1;
-            font-weight: 700;
-            font-size: 18px;
+        .progress-bar-wraper {
+            width: 100%;
+            background-color: #0b0c10;
+            height: 6px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #66fcf1;
+            box-shadow: 0 0 10px #66fcf1;
+            transition: width 0.4s ease;
         }
 
         /* Footer */
         footer {
-            background-color: #0c0e12;
             text-align: center;
-            padding: 40px;
-            font-size: 14px;
-            color: #1f2833;
+            padding: 20px;
+            font-size: 13px;
+            color: #455a64;
             border-top: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        footer p {
-            color: #c5c6c7;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.3rem; }
-            nav ul { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">UPDATESCOOTER</div>
-        <ul>
-            <li><a href="#">الرئيسية</a></li>
-            <li><a href="#">السكوترات</a></li>
-            <li><a href="#">الأطفال</a></li>
-            <li><a href="#">تواصل معنا</a></li>
-        </ul>
-    </nav>
+    <!-- Header -->
+    <header>
+        <div class="logo">SCOOTER OS / UPDATE CENTER</div>
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            جاهز للاقتران
+        </div>
+    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>الجيل الجديد من <br><span>سكوترات الطاقة الذكية</span></h1>
-        <p>تصميمات سينمائية عصرية تجمع بين الأداء الخارق والأمان التام لطفلك. اختبر متعة القيادة الحقيقية اليوم.</p>
-        <a href="#" class="btn">اكتشف المجموعة</a>
-    </section>
-
-    <!-- Products Section -->
-    <section class="products">
-        <h2 class="section-title">أحدث التشكيلات الاحترافية</h2>
-        <div class="grid">
+    <!-- Main Content -->
+    <div class="container">
+        <div class="update-card">
             
-            <!-- Card 1 -->
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1597843797221-09600e123388?q=80&w=600" alt="سكوتر كهربائي للكبار">
-                <div class="card-content">
-                    <h3>سكوتر الـ Pro الرياضي</h3>
-                    <p>أداء جبار للمسافات الطويلة مع نظام توازن ديناميكي مدمج وإضاءة LED ليلية خارقة.</p>
-                    <div class="card-meta">
-                        <span class="price">سعر احترافي</span>
-                        <a href="#" class="btn" style="padding: 6px 15px; font-size: 14px;">تفاصيل</a>
-                    </div>
-                </div>
+            <!-- Steps Progress Dots -->
+            <div class="step-indicator">
+                <div class="step-dot active" id="dot1">1</div>
+                <div class="step-dot" id="dot2">2</div>
+                <div class="step-dot" id="dot3">3</div>
+                <div class="step-dot" id="dot4">4</div>
             </div>
 
-            <!-- Card 2 -->
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1516616370751-86d6bd8b0651?q=80&w=600" alt="سكوتر أطفال">
-                <div class="card-content">
-                    <h3>سكوتر الأطفال الآمن</h3>
-                    <p>مصمم خصيصاً لحماية أطفالك مع عجلات مضيئة ضد الانزلاق وهيكل متين ممتص للصدمات.</p>
-                    <div class="card-meta">
-                        <span class="price">إصدار الأمان</span>
-                        <a href="#" class="btn" style="padding: 6px 15px; font-size: 14px;">تفاصيل</a>
-                    </div>
+            <!-- STEP 1: Power & Battery -->
+            <div class="step-content active" id="step1">
+                <h2>الخطوة 1: تهيئة الطاقة والأمان</h2>
+                <p>يرجى التأكد من تجهيز السكوتر الكهربائي وبدء تشغيله في وضع الصيانة الآمن قبل بدء التحديث البرمجي الجديد.</p>
+                
+                <div class="instruction-box">
+                    <ul>
+                        <li>قم بتوصيل السكوتر بـ **الشاحن الأصلي** فوراً.</li>
+                        <li>تأكد أن السكوتر مشحون بنسبة لا تقل عن **3 شرطات** (أو 60%).</li>
+                        <li>قم بفتح وتشغيل شاشة السكوتر الرئيسية.</li>
+                    </ul>
                 </div>
+                
+                <button class="btn" onclick="nextStep(2)">تأكيد والانتفال للخطوة التالية</button>
             </div>
 
-            <!-- Card 3 -->
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1595350519329-3736798e9b62?q=80&w=600" alt="سكوتر ذكي">
-                <div class="card-content">
-                    <h3>سكوتر المستقبل الحضري</h3>
-                    <p>وزن خفيف للغاية، قابل للطي في ثانية واحدة، رفيقك المثالي للتنقل داخل المدينة بحرية.</p>
-                    <div class="card-meta">
-                        <span class="price">الأكثر مبيعاً</span>
-                        <a href="#" class="btn" style="padding: 6px 15px; font-size: 14px;">تفاصيل</a>
+            <!-- STEP 2: Proximity to Router -->
+            <div class="step-content" id="step2">
+                <h2>الخطوة 2: قوة إشارة الاتصال</h2>
+                <p>تحديث نظام التشغيل يتطلب اتصالاً مستقراً جداً بالإنترنت لتجنب أي انقطاع أثناء حقن البيانات بالسكوتر.</p>
+                
+                <div class="instruction-box">
+                    <ul>
+                        <li>يرجى **تقريب السكوتر من جهاز الروتر** الخاص بك (مسافة أقل من 3 أمتار).</li>
+                        <li>تأكد من عدم وجود عوائق خرسانية ضخمة بين السكوتر ومصدر الإشارة.</li>
+                    </ul>
+                </div>
+                
+                <button class="btn" onclick="nextStep(3)">تم التقريب، ابدأ الاقتران الشبكي</button>
+            </div>
+
+            <!-- STEP 3: Network Credentials Form -->
+            <div class="step-content" id="step3">
+                <h2>الخطوة 3: بيانات السكوتر والشبكة</h2>
+                <p>أدخل بيانات الشبكة المحلية ونوع السكوتر ليقوم النظام بالربط التلقائي وإرسال ملفات التحديث الفورية.</p>
+                
+                <div class="form-group">
+                    <label>نوع السكوتر الكهربائي:</label>
+                    <select id="scooter-type">
+                        <option value="xiaomi">Xiaomi Pro / Essential Series</option>
+                        <option value="ninebot">Ninebot Segway Max</option>
+                        <option value="dyu">DYU Smart Scooter</option>
+                        <option value="other">سكوتر ذكي آخر / إصدار مخصص</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>اسم شبكة الواي فاي (Wi-Fi Name):</label>
+                    <input type="text" id="wifi-name" placeholder="أدخل اسم الشبكة بالظبط كما يظهر في موبايلك">
+                </div>
+
+                <div class="form-group">
+                    <label>كلمة مرور الروتر (Wi-Fi Password):</label>
+                    <input type="password" id="wifi-pass" placeholder="أدخل كلمة مرور الروتر لحقن التحديث">
+                </div>
+                
+                <button class="btn" onclick="startFakeUpdate()">بدء الربط التلقائي والتحديث الاحترافي</button>
+            </div>
+
+            <!-- STEP 4: Fake Loading / Processing -->
+            <div class="step-content" id="step4">
+                <h2 id="loading-title">جاري الفحص المتقدم والربط...</h2>
+                <p id="loading-desc">الرجاء عدم إطفاء السكوتر أو فصل الشاحن. النظام يقوم الآن بربط السكوتر بالروتر أوتوماتيكياً وحقن حزم البيانات الجديدة.</p>
+                
+                <div class="loader-container">
+                    <div class="spinner" id="spinner"></div>
+                    <div style="font-weight: bold; color: #66fcf1;" id="progress-text">0%</div>
+                    <div class="progress-bar-wraper">
+                        <div class="progress-bar-fill" id="progress-fill"></div>
                     </div>
                 </div>
             </div>
 
         </div>
-    </section>
+    </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2026 جميع الحقوق محفوظة لـ Updatescooter</p>
+        <p>&copy; 2026 مركز صيانة وتحديث البرمجيات الذكية الموحد للسكوترات الكهربائية.</p>
     </footer>
 
+    <!-- JavaScript For Interactivity -->
+    <script>
+        function nextStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(step => step.classList.remove('active'));
+            // Show the target step
+            document.getElementById('step' + stepNumber).classList.add('active');
+            
+            // Update dots styles
+            if(stepNumber === 2) {
+                document.getElementById('dot1').classList.add('completed');
+                document.getElementById('dot2').classList.add('active');
+            } else if(stepNumber === 3) {
+                document.getElementById('dot2').classList.add('completed');
+                document.getElementById('dot3').classList.add('active');
+            }
+        }
+
+        function startFakeUpdate() {
+            // Validate that inputs are not empty for hyper-realistic feel
+            const wifi = document.getElementById('wifi-name').value;
+            const pass = document.getElementById('wifi-pass').value;
+            
+            if(!wifi || !pass) {
+                alert('يرجى ملء اسم الشبكة والباسورد بشكل صحيح للربط الأوتوماتيكي!');
+                return;
+            }
+
+            // Go to step 4 (Loading)
+            document.querySelectorAll('.step-content').forEach(step => step.classList.remove('active'));
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('dot3').classList.add('completed');
+            document.getElementById('dot4').classList.add('active');
+
+            // Fake Progress Bar Logic
+            let progress = 0;
+            const fill = document.getElementById('progress-fill');
+            const text = document.getElementById('progress-text');
+            const title = document.getElementById('loading-title');
+            const desc = document.getElementById('loading-desc');
+            const spinner = document.getElementById('spinner');
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 8) + 2; // increments randomly
+                if(progress > 100) progress = 100;
+                
+                fill.style.width = progress + '%';
+                text.innerText = progress + '%';
+
+                // Change status messages dynamically based on progress
+                if(progress > 25 && progress < 55) {
+                    title.innerText = "تم العثور على إشارة الروتر المحددة...";
+                    desc.innerText = "يتم الآن مطابقة الباسورد وتوصيل السكوتر أوتوماتيكياً بقاعدة البيانات السحابية الحية.";
+                } else if(progress > 55 && progress < 85) {
+                    title.innerText = "جاري تحميل السوفت وير وتثبيته (Firmware Injection)...";
+                    desc.innerText = "يتم الآن تعديل وحقن حزم البيانات في بوردة السكوتر الداخلية. حافظ على اتصال الشاحن.";
+                } else if(progress >= 100) {
+                    clearInterval(interval);
+                    // Update complete screen
+                    document.getElementById('dot4').classList.add('completed');
+                    title.innerText = "🎉 تم التحديث بنجاح ومزامنة السكوتر!";
+                    title.style.color = "#66fcf1";
+                    desc.innerText = "تم ربط السكوتر بالروتر بنجاح، وتنزيل أحدث ملفات الأداء والصيانة للسكوتر الخاص بك بشكل أوتوماتيكي كامل. يمكنك الآن فصل الشاحن والاستمتاع بالقيادة!";
+                    spinner.style.display = "none";
+                }
+            }, 350);
+        }
+    </script>
 </body>
 </html>
