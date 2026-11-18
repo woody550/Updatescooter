@@ -3,198 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ELNOBY | جراج المهام</title>
+<title>NobyX Cairo Limousine | جراج المهام</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <script>
-  tailwind.config = {
-    theme: { extend: {
-      fontFamily: { sans: ['Cairo', 'sans-serif'] },
-      colors: { gold: '#f5c542', neon: '#00e5ff', garage: '#07090d' }
-    }}
-  }
+  tailwind.config = { theme: { extend: {
+    fontFamily: { cairo: ['Cairo','sans-serif'], russo: ['"Russo One"','sans-serif'] },
+    colors: { gold: '#f7c948', purple: { 350: '#b47cff' } }
+  }}}
 </script>
 
 <style>
-  body { background:#07090d; font-family:'Cairo',sans-serif; overflow-x:hidden; }
+  body { background:#06040c; font-family:'Cairo',sans-serif; overflow-x:hidden; }
+  .font-russo { font-family:'Russo One',sans-serif; }
+  .gold { color:#f7c948; text-shadow:0 0 12px rgba(247,201,72,.5); }
 
   /* ===== خلفية الجراج ===== */
   .garage-bg {
     background:
-      radial-gradient(ellipse at top, rgba(0,229,255,.18), transparent 60%),
-      linear-gradient(180deg, #0b0f17 0%, #050608 100%);
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,85,247,.35), transparent 70%),
+      radial-gradient(ellipse at bottom, rgba(247,201,72,.07), transparent 60%),
+      linear-gradient(#0d0717, #05030a);
   }
-  .ceiling-light {
-    position:absolute; top:0; width:120px; height:260px;
-    background: linear-gradient(to bottom, rgba(0,229,255,.35), transparent);
-    filter: blur(14px); animation: beam 5s ease-in-out infinite; pointer-events:none;
+  .grid-floor {
+    position:fixed; left:0; right:0; bottom:0; height:45vh; pointer-events:none; opacity:.45;
+    background-image:
+      linear-gradient(rgba(168,85,247,.35) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,85,247,.35) 1px, transparent 1px);
+    background-size:60px 60px;
+    transform:perspective(500px) rotateX(60deg); transform-origin:bottom;
+    -webkit-mask-image:linear-gradient(transparent, #000); mask-image:linear-gradient(transparent, #000);
   }
-  @keyframes beam { 0%,100%{opacity:.35} 50%{opacity:.9} }
+  .scan::after {
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.15) 0 1px, transparent 1px 3px);
+  }
+  .beam {
+    position:absolute; top:0; width:140px; height:100%; pointer-events:none;
+    background:linear-gradient(rgba(180,124,255,.35), transparent);
+    filter:blur(12px); animation:beam 5s ease-in-out infinite;
+  }
+  @keyframes beam { 0%,100%{opacity:.3} 50%{opacity:.9} }
 
-  .neon-text { text-shadow: 0 0 8px #00e5ff, 0 0 25px #00e5ff; }
-  .gold-text { color:#f5c542; text-shadow: 0 0 12px rgba(245,197,66,.6); }
-
-  /* ===== كروت GTA ===== */
-  .gta-card {
-    background: linear-gradient(160deg, rgba(20,26,38,.95), rgba(8,10,16,.95));
-    border: 1px solid rgba(0,229,255,.25);
-    transition: transform .35s ease, box-shadow .35s ease, border-color .35s;
+  /* ===== كروت HUD ===== */
+  .hud {
+    background:linear-gradient(160deg, rgba(30,16,48,.92), rgba(8,4,14,.95));
+    border:1px solid rgba(168,85,247,.4);
+    clip-path:polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+    transition:transform .3s, box-shadow .3s, filter .3s;
   }
-  .gta-card:hover, .gta-card.active {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 0 28px rgba(0,229,255,.45);
-    border-color: #00e5ff;
-  }
+  .hud:hover { box-shadow:0 0 26px rgba(168,85,247,.45); }
+  .selected { background:linear-gradient(90deg, rgba(168,85,247,.45), rgba(20,10,30,.95)); }
 
-  /* ===== أشرطة الإحصائيات ===== */
-  .stat-track { background: rgba(255,255,255,.08); height: 10px; border-radius: 999px; overflow:hidden; }
-  .stat-fill {
-    height:100%; width:0%; border-radius:999px;
-    background: linear-gradient(90deg, #00e5ff, #f5c542);
-    box-shadow: 0 0 12px rgba(0,229,255,.7);
-    transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+  /* ===== أزرار مايلة زي GTA ===== */
+  .gta-btn {
+    clip-path:polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+    transition:transform .2s, filter .2s;
   }
-
-  /* ===== أنيميشن الظهور ===== */
-  .fade-up { opacity:0; transform: translateY(40px) scale(.96); transition: opacity .8s ease, transform .8s ease; }
-  .fade-up.show { opacity:1; transform:none; }
-  .car-enter { animation: carEnter 1s cubic-bezier(.2,.8,.2,1) both; }
-  @keyframes carEnter {
-    from { opacity:0; transform: translateX(-70px) scale(.92); filter: blur(6px); }
-    to   { opacity:1; transform: none; filter: blur(0); }
+  .gta-btn:hover { transform:translateY(-2px); filter:brightness(1.15); }
+  .btn-gold { background:linear-gradient(90deg,#f7c948,#e0a800); color:#000; }
+  .btn-green { background:linear-gradient(90deg,#22c55e,#15803d); color:#fff; animation:pulse 2s infinite; }
+  .btn-purple { background:linear-gradient(90deg,#a855f7,#6d28d9); color:#fff; }
+  @keyframes pulse {
+    0%,100% { box-shadow:0 0 18px rgba(34,197,94,.5); }
+    50% { box-shadow:0 0 42px rgba(34,197,94,.95); }
   }
 
-  /* ===== اللوجو ===== */
-  .logo-glow { animation: logoGlow 2.5s ease-in-out infinite; }
+  /* ===== شريط الإحصائيات المقسم ===== */
+  .seg { display:grid; grid-template-columns:repeat(10,1fr); gap:4px; }
+  .seg span { height:14px; background:rgba(255,255,255,.08); transform:skewX(-20deg); transition:background .25s, box-shadow .25s; }
+  .seg span.on { background:linear-gradient(#c084fc,#7c3aed); box-shadow:0 0 10px #a855f7; }
+
+  /* ===== أنيميشن ===== */
+  .reveal { opacity:0; transform:translateX(40px); }
+  .reveal.show { opacity:1; transform:none; transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .car-in { animation:carIn 1s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes carIn {
+    from { opacity:0; transform:translateX(-60px) scale(1.06); filter:blur(8px); }
+    to   { opacity:1; transform:none; filter:blur(0); }
+  }
+  .spot { background:radial-gradient(ellipse, rgba(168,85,247,.55), transparent 70%); }
+  .logo-glow { animation:logoGlow 2.5s ease-in-out infinite; }
   @keyframes logoGlow {
-    0%,100% { filter: drop-shadow(0 0 6px rgba(0,229,255,.5)); transform: scale(1); }
-    50%     { filter: drop-shadow(0 0 22px rgba(0,229,255,1)); transform: scale(1.04); }
+    0%,100% { filter:drop-shadow(0 0 6px rgba(168,85,247,.6)); }
+    50% { filter:drop-shadow(0 0 22px rgba(168,85,247,1)); }
   }
-  .logo-fallback { font-weight:900; font-size:2rem; color:#fff; letter-spacing:3px; }
-
-  /* ===== شاشة البداية ===== */
-  #splash { transition: opacity .8s ease, visibility .8s; }
+  #splash { transition:opacity .8s, visibility .8s; }
   #splash.hide { opacity:0; visibility:hidden; }
-  .splash-line {
-    height:3px; width:0; background: linear-gradient(90deg, transparent, #00e5ff, #f5c542, transparent);
-    animation: lineGrow 1.6s .4s ease forwards;
-  }
-  @keyframes lineGrow { to { width: 280px; } }
+  .splash-line { height:3px; width:0; background:linear-gradient(90deg,transparent,#a855f7,#f7c948,transparent); animation:lineGrow 1.6s .4s ease forwards; }
+  @keyframes lineGrow { to { width:280px; } }
 
-  /* ===== زراير ===== */
-  .btn-go {
-    background: linear-gradient(135deg, #22c55e, #15803d);
-    box-shadow: 0 0 30px rgba(34,197,94,.6);
-    animation: btnPulse 2s infinite;
+  /* ===== مكان الصورة لو مش موجودة ===== */
+  .ph {
+    position:absolute; inset:0; display:none; align-items:center; justify-content:center;
+    flex-direction:column; text-align:center; padding:8px; font-size:12px; color:#d8b4fe;
+    background:rgba(40,20,70,.6); border:1px dashed rgba(168,85,247,.5);
   }
-  @keyframes btnPulse {
-    0%,100% { box-shadow: 0 0 20px rgba(34,197,94,.5); }
-    50%     { box-shadow: 0 0 45px rgba(34,197,94,.95); }
-  }
-  .btn-go:hover { transform: scale(1.03); }
 
-  /* ===== المعاينة الداخلية ===== */
-  #interiorView { touch-action: none; cursor: grab; }
-  #interiorView:active { cursor: grabbing; }
-  #interiorImg { user-select:none; -webkit-user-drag:none; transition: transform .05s linear; }
-
-  /* ===== مربعات الإضافات ===== */
-  .addon input:checked + div { border-color:#f5c542; box-shadow: 0 0 14px rgba(245,197,66,.4); }
+  #interiorView { touch-action:none; cursor:grab; }
+  #interiorView:active { cursor:grabbing; }
+  #interiorImg { user-select:none; -webkit-user-drag:none; }
 
   /* ===== سلايدر الأيام ===== */
   #days { -webkit-appearance:none; width:100%; height:8px; border-radius:999px;
-    background: linear-gradient(90deg, #00e5ff, #f5c542); outline:none; }
+    background:linear-gradient(90deg,#a855f7,#f7c948); outline:none; }
   #days::-webkit-slider-thumb { -webkit-appearance:none; width:26px; height:26px; border-radius:50%;
-    background:#fff; border:4px solid #f5c542; box-shadow:0 0 15px #f5c542; cursor:pointer; }
+    background:#fff; border:4px solid #f7c948; box-shadow:0 0 15px #f7c948; cursor:pointer; }
+  .addon input:checked + div { border-color:#f7c948; box-shadow:0 0 14px rgba(247,201,72,.4); }
 </style>
 </head>
 
-<body class="garage-bg text-white min-h-screen">
+<body class="garage-bg text-white min-h-screen scan">
+<div class="grid-floor"></div>
 
-<!-- ================== شاشة البداية (اللوجو) ================== -->
-<div id="splash" class="fixed inset-0 z-[100] bg-garage flex flex-col items-center justify-center">
-  <img src="images/elnoby-logo.png" alt="ELNOBY"
-       class="logo-glow w-56 md:w-72"
-       onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'ELNOBY',className:'logo-fallback'}))">
+<!-- ================== شاشة البداية ================== -->
+<div id="splash" class="fixed inset-0 z-[100] bg-[#06040c] flex flex-col items-center justify-center">
+  <img src="images/nobyx-logo.png" alt="NobyX" class="logo-glow w-56 md:w-72"
+       onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'NobyX',className:'font-russo text-6xl text-purple-300'}))">
   <div class="splash-line mt-6"></div>
-  <p class="mt-4 text-cyan-300 text-sm tracking-widest">جاري تجهيز الجراج...</p>
+  <p class="mt-4 text-purple-300 text-sm tracking-widest">جاري تجهيز الجراج...</p>
 </div>
 
 <!-- ================== الهيدر ================== -->
-<header class="fixed top-0 inset-x-0 z-50 bg-black/60 backdrop-blur-md border-b border-cyan-500/20">
-  <div class="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
-    <img src="images/elnoby-logo.png" alt="ELNOBY" class="h-10 logo-glow"
-         onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'ELNOBY',className:'logo-fallback text-xl'}))">
+<header class="fixed top-0 inset-x-0 z-50 bg-black/70 backdrop-blur-md border-b border-purple-500/30">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+    <img src="images/nobyx-logo.png" alt="NobyX" class="h-10 logo-glow"
+         onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'NobyX',className:'font-russo text-2xl text-purple-300'}))">
     <nav class="hidden md:flex gap-6 text-sm font-bold">
-      <a href="#garage" class="hover:text-cyan-300">الجراج</a>
-      <a href="#missions" class="hover:text-cyan-300">المهام</a>
-      <a href="#checkout" class="hover:text-cyan-300">الحجز</a>
-      <a href="#reviews" class="hover:text-cyan-300">التقييمات</a>
+      <a href="#garage" class="hover:text-purple-350">الجراج</a>
+      <a href="#missions" class="hover:text-purple-350">المهام</a>
+      <a href="#checkout" class="hover:text-purple-350">الحجز</a>
+      <a href="#reviews" class="hover:text-purple-350">التقييمات</a>
     </nav>
-    <a id="headerCall" href="#" class="text-sm bg-gold text-black font-black px-4 py-2 rounded-full">اتصل بينا</a>
+    <a id="headerCall" href="#" class="gta-btn btn-gold text-sm font-black px-5 py-2">اتصل بينا</a>
   </div>
 </header>
 
 <!-- ================== الهيرو ================== -->
 <section class="relative pt-32 pb-16 overflow-hidden text-center">
-  <div class="ceiling-light left-[10%]"></div>
-  <div class="ceiling-light left-[45%]" style="animation-delay:1.5s"></div>
-  <div class="ceiling-light right-[10%]" style="animation-delay:3s"></div>
-
+  <div class="beam left-[8%]"></div>
+  <div class="beam left-[48%]" style="animation-delay:1.5s"></div>
+  <div class="beam right-[8%]" style="animation-delay:3s"></div>
   <div class="relative z-10 px-4">
-    <p class="text-cyan-300 tracking-[6px] text-sm mb-3">LEGENDARY MOTORSPORT · EGYPT</p>
-    <h1 class="text-4xl md:text-6xl font-black neon-text">اختار مركبتك.. وابدأ المهمة</h1>
-    <p class="mt-4 text-gray-300 max-w-xl mx-auto">تأجير سيارات VIP في مصر، من الساحل الشمالي لشرم الشيخ والغردقة، بخدمة واتساب في دقيقة.</p>
-    <a href="#garage" class="inline-block mt-8 btn-go text-white font-black px-8 py-3 rounded-full transition">ادخل الجراج</a>
+    <p class="text-purple-350 tracking-[6px] text-sm mb-3">NOBYX CAIRO LIMOUSINE</p>
+    <h1 class="font-russo text-4xl md:text-6xl text-white" style="text-shadow:0 0 14px #a855f7,0 0 35px #a855f7">اختار مركبتك.. وابدأ المهمة</h1>
+    <p class="mt-4 text-gray-300 max-w-xl mx-auto">تأجير سيارات VIP في مصر، من القاهرة للساحل الشمالي وشرم الشيخ والغردقة، بحجز على الواتساب في دقيقة.</p>
+    <a href="#garage" class="gta-btn btn-purple inline-block mt-8 font-black px-10 py-3">ادخل الجراج</a>
   </div>
 </section>
 
-<!-- ================== الجراج (الفلاتر والكروت) ================== -->
-<section id="garage" class="max-w-6xl mx-auto px-4 py-12">
-  <div class="flex flex-wrap justify-center gap-3 mb-10" id="filters"></div>
-  <div id="carGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-</section>
+<!-- ================== الجراج ================== -->
+<section id="garage" class="max-w-7xl mx-auto px-4 py-10 relative z-10">
+  <div class="flex flex-wrap justify-center gap-2 mb-8" id="filters"></div>
 
-<!-- ================== لوحة العربية المختارة ================== -->
-<section id="carPanel" class="hidden max-w-6xl mx-auto px-4 py-12">
-  <div class="gta-card rounded-3xl p-6 md:p-10 grid md:grid-cols-2 gap-8 items-center">
-    <div class="relative rounded-2xl overflow-hidden bg-black/50 aspect-video flex items-center justify-center">
-      <img id="panelImg" alt="" class="w-full h-full object-cover">
-      <div class="absolute bottom-3 right-3 text-xs bg-black/60 px-3 py-1 rounded-full text-cyan-300" id="panelCat"></div>
-    </div>
-    <div>
-      <p class="text-cyan-300 text-sm" id="panelModel"></p>
-      <h2 class="text-3xl md:text-4xl font-black neon-text mt-1" id="panelName"></h2>
-      <p class="gold-text text-2xl font-black mt-3" id="panelPrice"></p>
+  <div class="grid lg:grid-cols-12 gap-6">
+    <!-- قائمة العربيات (زي Legendary Motorsport) -->
+    <aside id="vehicleList" class="lg:col-span-4 space-y-3 max-h-[720px] overflow-y-auto pl-1"></aside>
 
-      <div class="mt-6 space-y-4" id="statsBox"></div>
+    <!-- العربية الكبيرة -->
+    <div id="showcase" class="lg:col-span-8 hud p-5 md:p-8 relative overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none beam left-1/2 -translate-x-1/2 opacity-40"></div>
+      <div class="relative">
+        <div class="flex justify-between text-xs tracking-[4px] text-purple-350">
+          <span id="sCat">اختار عربية من القائمة</span>
+          <span id="sModel"></span>
+        </div>
+        <h2 class="font-russo text-3xl md:text-5xl mt-2" id="sName">—</h2>
 
-      <div class="flex flex-wrap gap-3 mt-8">
-        <button onclick="openInterior()" class="flex-1 min-w-[180px] border-2 border-cyan-400 text-cyan-300 font-bold py-3 rounded-xl hover:bg-cyan-400/10 transition">🚘 اركب العربية / معاينة المقصورة</button>
-        <a href="#checkout" class="flex-1 min-w-[180px] bg-gold text-black font-black py-3 rounded-xl text-center hover:scale-[1.02] transition">احجز العربية دي</a>
+        <div class="relative mt-4 h-64 md:h-96" id="sMedia"></div>
+        <div class="relative h-6 -mt-4 spot blur-md rounded-full"></div>
+
+        <div class="grid md:grid-cols-2 gap-8 mt-6 items-start">
+          <div id="statsBox"></div>
+          <div>
+            <p class="gold font-black text-2xl" id="sPrice"></p>
+            <p class="text-xs text-gray-400 mt-1">السعر لليوم الواحد</p>
+            <div class="flex flex-col gap-3 mt-6">
+              <button onclick="openInterior()" class="gta-btn border-2 border-purple-400 text-purple-200 font-bold py-3 hover:bg-purple-400/10">🚘 اركب العربية / معاينة المقصورة</button>
+              <a href="#checkout" class="gta-btn btn-gold font-black py-3 text-center">احجز العربية دي</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================== المهام والفسح ================== -->
-<section id="missions" class="max-w-6xl mx-auto px-4 py-16">
-  <h2 class="text-3xl font-black text-center neon-text mb-2">المهام والفسح</h2>
+<!-- ================== المهام ================== -->
+<section id="missions" class="max-w-6xl mx-auto px-4 py-16 relative z-10">
+  <h2 class="font-russo text-3xl text-center mb-2" style="text-shadow:0 0 12px #a855f7">المهام والفسح</h2>
   <p class="text-center text-gray-400 mb-10">اختار مهمة جاهزة، والموقع يرشحلك العربية ويجهز الحجز</p>
   <div id="missionGrid" class="grid md:grid-cols-3 gap-6"></div>
 </section>
 
-<!-- ================== تخصيص الحجز ================== -->
-<section id="checkout" class="max-w-4xl mx-auto px-4 py-16">
-  <div class="gta-card rounded-3xl p-6 md:p-10">
-    <h2 class="text-3xl font-black text-center neon-text mb-2">جهّز مهمتك</h2>
+<!-- ================== الحجز ================== -->
+<section id="checkout" class="max-w-4xl mx-auto px-4 py-16 relative z-10">
+  <div class="hud p-6 md:p-10">
+    <h2 class="font-russo text-3xl text-center mb-2">جهّز مهمتك</h2>
     <p class="text-center text-gray-400 mb-8" id="chosenText">اختار عربية الأول من الجراج</p>
 
     <div class="mb-8">
       <div class="flex justify-between mb-3 font-bold">
         <span>عدد الأيام</span>
-        <span class="gold-text text-xl"><span id="daysLabel">1</span> يوم</span>
+        <span class="gold text-xl"><span id="daysLabel">1</span> يوم</span>
       </div>
       <input type="range" id="days" min="1" max="30" value="1" oninput="updateTotal()">
     </div>
@@ -202,40 +214,38 @@
     <h3 class="font-black mb-4">الإضافات</h3>
     <div class="grid sm:grid-cols-2 gap-4 mb-8" id="addonsBox"></div>
 
-    <div class="bg-black/50 rounded-2xl p-5 space-y-2 text-sm">
+    <div class="bg-black/50 p-5 space-y-2 text-sm border border-purple-500/20">
       <div class="flex justify-between"><span>سعر العربية</span><span id="sumBase">0</span></div>
       <div class="flex justify-between text-green-400 hidden" id="sumDiscountRow"><span>خصم الباقة</span><span id="sumDiscount">0</span></div>
       <div class="flex justify-between"><span>الإضافات</span><span id="sumAddons">0</span></div>
-      <div class="flex justify-between text-2xl font-black pt-3 border-t border-white/10 gold-text"><span>الإجمالي</span><span id="sumTotal">0 ج</span></div>
+      <div class="flex justify-between text-2xl font-black pt-3 border-t border-white/10 gold"><span>الإجمالي</span><span id="sumTotal">0</span></div>
     </div>
 
-    <button onclick="sendWhatsApp()" class="w-full mt-8 btn-go text-white text-xl font-black py-5 rounded-2xl transition">
-      🏁 ابدأ المهمة - احجز واتساب الآن
-    </button>
+    <button onclick="sendWhatsApp()" class="gta-btn btn-green w-full mt-8 text-xl font-black py-5">🏁 ابدأ المهمة - احجز واتساب الآن</button>
   </div>
 </section>
 
-<!-- ================== التقييمات (Quests) ================== -->
-<section id="reviews" class="max-w-6xl mx-auto px-4 py-16">
-  <h2 class="text-3xl font-black text-center neon-text mb-2">المهام المكتملة</h2>
+<!-- ================== التقييمات ================== -->
+<section id="reviews" class="max-w-6xl mx-auto px-4 py-16 relative z-10">
+  <h2 class="font-russo text-3xl text-center mb-2" style="text-shadow:0 0 12px #a855f7">المهام المكتملة</h2>
   <p class="text-center text-gray-400 mb-10">تقييمات عملائنا بنظام الإنجازات</p>
   <div id="reviewGrid" class="grid md:grid-cols-2 gap-6"></div>
 </section>
 
-<footer class="border-t border-cyan-500/20 py-10 text-center text-gray-400">
-  <img src="images/elnoby-logo.png" alt="ELNOBY" class="h-12 mx-auto mb-4 logo-glow"
-       onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'ELNOBY',className:'logo-fallback'}))">
+<footer class="border-t border-purple-500/30 py-10 text-center text-gray-400 relative z-10">
+  <img src="images/nobyx-logo.png" alt="NobyX" class="h-14 mx-auto mb-4 logo-glow"
+       onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'NobyX',className:'font-russo text-3xl text-purple-300'}))">
   <p>📞 <span id="footerPhone"></span></p>
-  <p class="text-xs mt-2">© ELNOBY 2026 · كل الحقوق محفوظة</p>
+  <p class="text-xs mt-2">© NobyX Cairo Limousine 2026 · كل الحقوق محفوظة</p>
 </footer>
 
 <!-- ================== مودال المقصورة ================== -->
 <div id="interiorModal" class="hidden fixed inset-0 z-[90] bg-black/90 flex flex-col items-center justify-center p-4">
-  <div class="absolute top-4 inset-x-0 flex justify-between px-6">
-    <span class="text-cyan-300 font-black" id="interiorTitle"></span>
-    <button onclick="closeInterior()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-lg font-bold">✕ رجوع للجراج</button>
+  <div class="absolute top-4 inset-x-0 flex justify-between items-center px-6">
+    <span class="text-purple-350 font-russo" id="interiorTitle"></span>
+    <button onclick="closeInterior()" class="gta-btn bg-red-600 hover:bg-red-500 px-5 py-2 font-bold">✕ رجوع للجراج</button>
   </div>
-  <div id="interiorView" class="w-full max-w-4xl aspect-video overflow-hidden rounded-2xl border border-cyan-400/40 shadow-[0_0_40px_rgba(0,229,255,.3)] relative">
+  <div id="interiorView" class="w-full max-w-4xl aspect-video overflow-hidden relative border border-purple-400/50 shadow-[0_0_40px_rgba(168,85,247,.4)]">
     <img id="interiorImg" alt="" class="w-full h-full object-cover">
   </div>
   <p class="mt-4 text-gray-400 text-sm">🖱️ اسحب الصورة عشان تتفرج على التفاصيل</p>
@@ -245,44 +255,38 @@
 /* =====================================================================
    ⚠️ ضع صور سياراتك وبياناتها هنا
    ---------------------------------------------------------------------
-   - img: صورة العربية من خارج (حطها في فولدر images)
-   - interior: صورة التابلوه والمقاعد من جوه
-   - price: سعر اليوم بالجنيه (غيّره براحتك)
-   - stats: الأرقام من 0 لـ 100 (بتظهر كأشرطة GTA)
+   - img: صورة العربية من برا (في فولدر images)
+   - interior: صورة الداخلية (التابلوه والمقاعد)
+   - price: سعر اليوم بالجنيه
+   - stats: أرقام من 0 لـ 100 (بتظهر كخانات زي GTA)
    ===================================================================== */
-const WHATSAPP_NUMBER = '201130817917';   // رقم الواتساب بكود مصر 20
+const BRAND = 'NobyX Cairo Limousine';
+const WHATSAPP_NUMBER = '201130817917';   // ⚠️ تأكد إن ده رقم الشركة
 const PHONE_DISPLAY = '01130817917';
 
 const CARS = [
-  { id:'c200',    name:'Mercedes C200',       model:'2025', category:'sedan',   price:3500,
+  { id:'c200',    name:'Mercedes C200',      model:'2025', category:'sedan',   price:3500,
     img:'images/c200.jpg',    interior:'images/c200-interior.jpg',
     stats:{ speed:82, accel:74, handling:80, comfort:92 } },
-
-  { id:'e200',    name:'Mercedes-Benz E200',  model:'2025', category:'sedan',   price:4000,
+  { id:'e200',    name:'Mercedes-Benz E200', model:'2025', category:'sedan',   price:4000,
     img:'images/e200.jpg',    interior:'images/e200-interior.jpg',
     stats:{ speed:84, accel:76, handling:82, comfort:95 } },
-
-  { id:'v250',    name:'Mercedes V250 Van',   model:'VIP',  category:'van',     price:6500,
+  { id:'v250',    name:'Mercedes V250 Van',  model:'VIP',  category:'van',     price:6500,
     img:'images/v250.jpg',    interior:'images/v250-interior.jpg',
     stats:{ speed:70, accel:60, handling:66, comfort:98 } },
-
-  { id:'t2',      name:'Jetour T2',           model:'2025', category:'suv',     price:2800,
+  { id:'t2',      name:'Jetour T2',          model:'2025', category:'suv',     price:2800,
     img:'images/t2.jpg',      interior:'images/t2-interior.jpg',
     stats:{ speed:78, accel:70, handling:76, comfort:80 } },
-
-  { id:'s09',     name:'Soueast S09',         model:'2025', category:'suv',     price:2600,
+  { id:'s09',     name:'Soueast S09',        model:'2025', category:'suv',     price:2600,
     img:'images/s09.jpg',     interior:'images/s09-interior.jpg',
     stats:{ speed:76, accel:68, handling:74, comfort:86 } },
-
-  { id:'sog',     name:'SOG SUV',             model:'2025', category:'suv',     price:2200,
+  { id:'sog',     name:'SOG SUV',            model:'2025', category:'suv',     price:2200,
     img:'images/sog.jpg',     interior:'images/sog-interior.jpg',
     stats:{ speed:74, accel:66, handling:72, comfort:78 } },
-
-  { id:'elantra', name:'Hyundai Elantra',     model:'2025', category:'economy', price:1500,
+  { id:'elantra', name:'Hyundai Elantra',    model:'2025', category:'economy', price:1500,
     img:'images/elantra.jpg', interior:'images/elantra-interior.jpg',
     stats:{ speed:70, accel:62, handling:70, comfort:68 } },
-
-  { id:'corolla', name:'Toyota Corolla',      model:'2025', category:'economy', price:1400,
+  { id:'corolla', name:'Toyota Corolla',     model:'2025', category:'economy', price:1400,
     img:'images/corolla.jpg', interior:'images/corolla-interior.jpg',
     stats:{ speed:68, accel:60, handling:68, comfort:70 } },
 ];
@@ -290,14 +294,14 @@ const CARS = [
 const CATS = { all:'الكل', sedan:'سيدان فخمة', suv:'SUV وحوش', van:'فان VIP', economy:'اقتصادية' };
 const STAT_LABELS = { speed:'السرعة القصوى', accel:'التسارع', handling:'الثبات والتحكم', comfort:'الراحة والفخامة' };
 
-// الباقات الجاهزة (المهام)
+// المهام الجاهزة
 const MISSIONS = [
   { id:'m1', title:'مهمة الساحل الشمالي', desc:'3 أيام على البحر، العين السخنة والساحل', days:3, carId:'e200', addons:['wifi'], discount:0.10 },
   { id:'m2', title:'مهمة وسط البلد والزمالك', desc:'خروجة يوم كامل مع سائق محترف', days:1, carId:'c200', addons:['driver'], discount:0.05 },
   { id:'m3', title:'مهمة استلام VIP من المطار', desc:'فان VIP مع توصيل لباب البيت', days:1, carId:'v250', addons:['driver','delivery'], discount:0 },
 ];
 
-// الإضافات (perDay = true يعني السعر بيتضرب في عدد الأيام)
+// الإضافات (perDay = السعر بيتضرب في عدد الأيام)
 const ADDONS = [
   { id:'driver',   name:'🧑‍✈️ سائق خاص محترف', price:500, perDay:true  },
   { id:'delivery', name:'📍 توصيل للمطار أو باب البيت', price:300, perDay:false },
@@ -316,104 +320,106 @@ const REVIEWS = [
 let currentFilter = 'all';
 let selectedCar = null;
 let currentMission = null;
+let summary = { days:1, picked:[], total:0 };
+
+const fmt = n => Number(n).toLocaleString('en') + ' ج';
+
+// دالة بتعرض الصورة، ولو مش موجودة بتعرض مكان بنفسجي بدلها
+function carImg(src, alt, cls) {
+  return `<img src="${src}" alt="${alt}" loading="lazy" class="${cls}"
+    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="ph">${alt}<small>ضع الصورة في فولدر images</small></div>`;
+}
 
 /* ---------- الفلاتر ---------- */
 function renderFilters() {
   document.getElementById('filters').innerHTML = Object.entries(CATS).map(([key, label]) => `
     <button onclick="setFilter('${key}')"
-      class="px-5 py-2 rounded-full font-bold border transition ${currentFilter===key
-        ? 'bg-cyan-400 text-black border-cyan-400 shadow-[0_0_18px_rgba(0,229,255,.6)]'
-        : 'border-cyan-500/40 text-cyan-300 hover:bg-cyan-400/10'}">${label}</button>
-  `).join('');
+      class="gta-btn px-5 py-2 font-bold border transition ${currentFilter===key
+        ? 'btn-purple border-purple-400'
+        : 'border-purple-500/40 text-purple-200 hover:bg-purple-400/10'}">${label}</button>`).join('');
 }
-function setFilter(key) { currentFilter = key; renderFilters(); renderCars(); }
+function setFilter(key) { currentFilter = key; renderFilters(); renderList(); }
 
-/* ---------- كروت السيارات ---------- */
-function renderCars() {
+/* ---------- قائمة العربيات ---------- */
+function renderList() {
   const list = CARS.filter(c => currentFilter === 'all' || c.category === currentFilter);
-  document.getElementById('carGrid').innerHTML = list.map((c, i) => `
-    <div class="gta-card fade-up rounded-2xl p-4 cursor-pointer ${selectedCar && selectedCar.id===c.id ? 'active' : ''}"
-         style="transition-delay:${i*80}ms" onclick="selectCar('${c.id}')">
-      <div class="relative h-44 rounded-xl overflow-hidden bg-black/50">
-        <img src="${c.img}" alt="${c.name}" loading="lazy" class="w-full h-full object-cover"
-             onerror="this.style.display='none'">
-        <span class="absolute top-2 right-2 text-xs bg-gold text-black px-2 py-1 rounded font-black">${CATS[c.category]}</span>
+  document.getElementById('vehicleList').innerHTML = list.map((c, i) => `
+    <button onclick="selectCar('${c.id}')" style="transition-delay:${i*70}ms"
+      class="reveal hud w-full flex items-center gap-3 p-2 text-right ${selectedCar && selectedCar.id===c.id ? 'selected' : ''}">
+      <div class="relative w-24 h-16 shrink-0 rounded-md overflow-hidden bg-black/60">
+        ${carImg(c.img, c.name, 'absolute inset-0 w-full h-full object-cover')}
       </div>
-      <h3 class="mt-4 text-lg font-black">${c.name}</h3>
-      <div class="flex justify-between items-center mt-1 text-sm">
-        <span class="text-cyan-300">${c.model}</span>
-        <span class="gold-text font-black">${c.price.toLocaleString('en')} ج / يوم</span>
+      <div class="flex-1 min-w-0">
+        <div class="font-russo text-sm truncate">${c.name}</div>
+        <div class="text-xs text-purple-300">${c.model} · ${CATS[c.category]}</div>
       </div>
-    </div>`).join('');
-  observeFadeUps();
+      <div class="gold font-black text-sm whitespace-nowrap">${fmt(c.price)}</div>
+    </button>`).join('') || '<p class="text-gray-400">مفيش عربيات في الفئة دي</p>';
+  observeReveal();
 }
 
-/* ---------- اختيار عربية + الإحصائيات ---------- */
+/* ---------- اختيار عربية ---------- */
 function selectCar(id) {
   selectedCar = CARS.find(c => c.id === id);
-  const panel = document.getElementById('carPanel');
-  panel.classList.remove('hidden');
+  const s = selectedCar;
 
-  const img = document.getElementById('panelImg');
-  img.style.display = '';
-  img.src = selectedCar.img;
-  img.alt = selectedCar.name;
-  img.onerror = () => img.style.display = 'none';
-  img.classList.remove('car-enter');
-  void img.offsetWidth;            // إعادة تشغيل الأنيميشن
-  img.classList.add('car-enter');
+  document.getElementById('sCat').textContent = CATS[s.category];
+  document.getElementById('sModel').textContent = s.model;
+  document.getElementById('sName').textContent = s.name;
+  document.getElementById('sMedia').innerHTML = carImg(s.img, s.name, 'absolute inset-0 w-full h-full object-contain car-in');
+  document.getElementById('sPrice').textContent = fmt(s.price) + ' / يوم';
+  document.getElementById('chosenText').textContent = 'العربية المختارة: ' + s.name;
 
-  document.getElementById('panelModel').textContent = selectedCar.model + ' · ' + CATS[selectedCar.category];
-  document.getElementById('panelName').textContent = selectedCar.name;
-  document.getElementById('panelCat').textContent = CATS[selectedCar.category];
-  document.getElementById('panelPrice').textContent = selectedCar.price.toLocaleString('en') + ' جنيه / يوم';
-
-  // أشرطة GTA
-  const box = document.getElementById('statsBox');
-  box.innerHTML = Object.entries(selectedCar.stats).map(([k, v]) => `
-    <div>
-      <div class="flex justify-between text-sm font-bold mb-1"><span>${STAT_LABELS[k]}</span><span class="text-cyan-300">${v}/100</span></div>
-      <div class="stat-track"><div class="stat-fill" data-w="${v}"></div></div>
+  // خانات الإحصائيات
+  document.getElementById('statsBox').innerHTML = Object.entries(s.stats).map(([k, v]) => `
+    <div class="mb-5">
+      <div class="flex justify-between text-sm font-bold mb-2"><span>${STAT_LABELS[k]}</span><span class="text-purple-300">${v}/100</span></div>
+      <div class="seg" data-v="${Math.round(v/10)}">${'<span></span>'.repeat(10)}</div>
     </div>`).join('');
-  requestAnimationFrame(() => setTimeout(() => {
-    box.querySelectorAll('.stat-fill').forEach(el => el.style.width = el.dataset.w + '%');
-  }, 80));
+  animateSegs();
 
-  document.getElementById('chosenText').textContent = 'العربية المختارة: ' + selectedCar.name;
-  renderCars();
+  renderList();
   updateTotal();
-  panel.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
-/* ---------- مودال المقصورة (تحريك الصورة) ---------- */
+function animateSegs() {
+  document.querySelectorAll('.seg').forEach(seg => {
+    const n = +seg.dataset.v;
+    const spans = seg.children;
+    [...spans].forEach(sp => sp.classList.remove('on'));
+    for (let i = 0; i < n; i++) {
+      setTimeout(() => spans[i].classList.add('on'), 200 + i * 90);
+    }
+  });
+}
+
+/* ---------- مودال المقصورة ---------- */
 let panX = 0, panY = 0, dragging = false, startX = 0, startY = 0;
 function openInterior() {
-  if (!selectedCar) return;
+  if (!selectedCar) { alert('اختار عربية الأول 🚗'); return; }
   document.getElementById('interiorTitle').textContent = 'المقصورة: ' + selectedCar.name;
   const img = document.getElementById('interiorImg');
   img.src = selectedCar.interior;
   img.onerror = () => { img.src = selectedCar.img; };
-  img.style.transform = 'translate(0px,0px) scale(1)';
   panX = 0; panY = 0;
+  img.style.transform = 'translate(0px,0px) scale(1)';
   document.getElementById('interiorModal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
 function closeInterior() {
   document.getElementById('interiorModal').classList.add('hidden');
   document.body.style.overflow = '';
-  document.getElementById('carGrid').scrollIntoView({ behavior:'smooth' });
 }
-const view = document.getElementById('interiorView');
+const iView = document.getElementById('interiorView');
 const iImg = document.getElementById('interiorImg');
 function applyPan() { iImg.style.transform = `translate(${panX}px, ${panY}px) scale(1.25)`; }
-view.addEventListener('pointerdown', e => { dragging = true; startX = e.clientX - panX; startY = e.clientY - panY; });
+iView.addEventListener('pointerdown', e => { dragging = true; startX = e.clientX - panX; startY = e.clientY - panY; });
 window.addEventListener('pointerup', () => dragging = false);
 window.addEventListener('pointermove', e => {
   if (!dragging) return;
-  panX = e.clientX - startX; panY = e.clientY - startY;
-  const maxX = 150, maxY = 90;           // حدود التحريك
-  panX = Math.max(-maxX, Math.min(maxX, panX));
-  panY = Math.max(-maxY, Math.min(maxY, panY));
+  panX = Math.max(-150, Math.min(150, e.clientX - startX));
+  panY = Math.max(-90, Math.min(90, e.clientY - startY));
   applyPan();
 });
 
@@ -422,18 +428,22 @@ function renderMissions() {
   document.getElementById('missionGrid').innerHTML = MISSIONS.map((m, i) => {
     const car = CARS.find(c => c.id === m.carId);
     return `
-    <div class="gta-card fade-up rounded-2xl p-6 flex flex-col" style="transition-delay:${i*120}ms">
-      <div class="text-xs text-cyan-300 tracking-widest mb-2">MISSION ${i+1}</div>
-      <h3 class="text-xl font-black">${m.title}</h3>
+    <div class="reveal hud p-6 flex flex-col" style="transition-delay:${i*120}ms">
+      <div class="relative h-36 rounded-md overflow-hidden bg-black/60 mb-4">
+        ${carImg(car.img, car.name, 'absolute inset-0 w-full h-full object-cover')}
+      </div>
+      <div class="text-xs text-purple-300 tracking-widest mb-1">MISSION ${i+1}</div>
+      <h3 class="font-russo text-lg">${m.title}</h3>
       <p class="text-gray-400 text-sm mt-2 flex-1">${m.desc}</p>
       <div class="mt-4 text-sm space-y-1">
-        <p>🚗 العربية: <span class="text-cyan-300 font-bold">${car.name}</span></p>
+        <p>🚗 العربية: <span class="text-purple-300 font-bold">${car.name}</span></p>
         <p>📅 المدة: <span class="font-bold">${m.days} ${m.days>1?'أيام':'يوم'}</span></p>
         ${m.discount ? `<p class="text-green-400 font-bold">🎁 خصم ${m.discount*100}%</p>` : ''}
       </div>
-      <button onclick="applyMission('${m.id}')" class="mt-5 bg-gold text-black font-black py-3 rounded-xl hover:scale-[1.03] transition">ابدأ المهمة</button>
+      <button onclick="applyMission('${m.id}')" class="gta-btn btn-gold mt-5 font-black py-3">ابدأ المهمة</button>
     </div>`;
   }).join('');
+  observeReveal();
 }
 function applyMission(id) {
   currentMission = MISSIONS.find(m => m.id === id);
@@ -449,9 +459,9 @@ function renderAddons() {
   document.getElementById('addonsBox').innerHTML = ADDONS.map(a => `
     <label class="addon cursor-pointer">
       <input type="checkbox" id="addon-${a.id}" class="hidden" onchange="updateTotal()">
-      <div class="p-4 rounded-xl border border-white/15 bg-white/5 transition hover:border-cyan-400">
+      <div class="p-4 border border-white/15 bg-white/5 transition hover:border-purple-400">
         <div class="font-bold">${a.name}</div>
-        <div class="text-sm text-gold mt-1">+${a.price} ج ${a.perDay ? '/ يوم' : ''}</div>
+        <div class="text-sm gold mt-1">+${a.price} ج ${a.perDay ? '/ يوم' : ''}</div>
       </div>
     </label>`).join('');
 }
@@ -460,8 +470,8 @@ function updateTotal() {
   document.getElementById('daysLabel').textContent = days;
   const base = selectedCar ? selectedCar.price * days : 0;
 
-  let addonsTotal = 0;
   const picked = [];
+  let addonsTotal = 0;
   ADDONS.forEach(a => {
     if (document.getElementById('addon-' + a.id).checked) {
       picked.push(a);
@@ -475,13 +485,13 @@ function updateTotal() {
   }
   const total = base - discount + addonsTotal;
 
-  document.getElementById('sumBase').textContent = base.toLocaleString('en') + ' ج';
-  document.getElementById('sumAddons').textContent = addonsTotal.toLocaleString('en') + ' ج';
+  document.getElementById('sumBase').textContent = fmt(base);
+  document.getElementById('sumAddons').textContent = fmt(addonsTotal);
   document.getElementById('sumDiscountRow').classList.toggle('hidden', !discount);
-  document.getElementById('sumDiscount').textContent = '- ' + discount.toLocaleString('en') + ' ج';
-  document.getElementById('sumTotal').textContent = total.toLocaleString('en') + ' ج';
+  document.getElementById('sumDiscount').textContent = '- ' + fmt(discount);
+  document.getElementById('sumTotal').textContent = fmt(total);
 
-  window._summary = { days, picked, total };
+  summary = { days, picked, total };
 }
 
 /* ---------- واتساب ---------- */
@@ -491,58 +501,65 @@ function sendWhatsApp() {
     document.getElementById('garage').scrollIntoView({ behavior:'smooth' });
     return;
   }
-  const s = window._summary;
-  const addonsText = s.picked.length ? s.picked.map(a => '• ' + a.name.replace(/^\S+\s/, '')).join('\n') : 'بدون إضافات';
+  const addonsText = summary.picked.length
+    ? summary.picked.map(a => '• ' + a.name.replace(/^\S+\s/, '')).join('\n')
+    : 'بدون إضافات';
+  const missionLine = currentMission && selectedCar.id === currentMission.carId && summary.days === currentMission.days
+    ? '🎁 *المهمة:* ' + currentMission.title + '\n' : '';
+
   const msg =
-`🏁 *طلب مهمة جديدة - ELNOBY*
+`🏁 *طلب مهمة جديدة - ${BRAND}*
 
 🚗 *العربية:* ${selectedCar.name}
-📅 *عدد الأيام:* ${s.days}
+📅 *عدد الأيام:* ${summary.days}
 🧩 *الإضافات:*
 ${addonsText}
+${missionLine}
+💰 *السعر الإجمالي:* ${summary.total.toLocaleString('en')} جنيه
 
-💰 *السعر الإجمالي:* ${s.total.toLocaleString('en')} جنيه
-${currentMission && selectedCar.id===currentMission.carId && s.days===currentMission.days ? '🎁 *مهمة:* ' + currentMission.title + '\n' : ''}
 أنا عايز أأكد الحجز 🙏`;
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-/* ---------- التقييمات (Quests) ---------- */
+/* ---------- التقييمات ---------- */
 function renderReviews() {
   document.getElementById('reviewGrid').innerHTML = REVIEWS.map((r, i) => `
-    <div class="gta-card fade-up rounded-2xl p-6 relative overflow-hidden" style="transition-delay:${i*100}ms">
-      <div class="absolute top-0 left-0 bg-green-500 text-black text-xs font-black px-3 py-1 rounded-br-xl">✔ مهمة مكتملة</div>
-      <div class="mt-6 flex justify-between items-center">
-        <h3 class="font-black">${r.mission}</h3>
-        <span class="text-xs text-cyan-300">${r.car}</span>
+    <div class="reveal hud p-6 relative overflow-hidden" style="transition-delay:${i*100}ms">
+      <div class="absolute top-0 left-0 bg-green-500 text-black text-xs font-black px-3 py-1">✔ مهمة مكتملة</div>
+      <div class="mt-6 flex justify-between items-center gap-2">
+        <h3 class="font-russo text-sm">${r.mission}</h3>
+        <span class="text-xs text-purple-300">${r.car}</span>
       </div>
       <p class="text-gray-300 mt-3 text-sm leading-7">"${r.text}"</p>
       <div class="flex justify-between items-center mt-4">
-        <div class="gold-text text-lg tracking-widest">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-        <div class="text-gold font-black text-sm animate-pulse">Respect +${r.stars*10}</div>
+        <div class="gold text-lg tracking-widest">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+        <div class="gold font-black text-sm animate-pulse">Respect +${r.stars*10}</div>
       </div>
     </div>`).join('');
+  observeReveal();
 }
 
 /* ---------- أنيميشن الظهور بالسكرول ---------- */
 const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); }
+  });
 }, { threshold: 0.15 });
-function observeFadeUps() {
-  document.querySelectorAll('.fade-up:not(.show)').forEach(el => io.observe(el));
+function observeReveal() {
+  document.querySelectorAll('.reveal:not(.show)').forEach(el => io.observe(el));
 }
 
 /* ---------- التشغيل ---------- */
+document.title = BRAND + ' | جراج المهام';
 document.getElementById('footerPhone').textContent = PHONE_DISPLAY;
 document.getElementById('headerCall').href = 'tel:+' + WHATSAPP_NUMBER;
 renderFilters();
-renderCars();
+renderList();
 renderMissions();
 renderAddons();
 renderReviews();
+selectCar(CARS[0].id);   // أول عربية بتتفتح تلقائياً
 updateTotal();
-observeFadeUps();
-
 window.addEventListener('load', () => {
   setTimeout(() => document.getElementById('splash').classList.add('hide'), 2400);
 });
